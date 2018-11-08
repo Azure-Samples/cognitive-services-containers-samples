@@ -1,5 +1,7 @@
-# Recognize Tex
- Sample Console Apps that demonstrate the optical character recognition capabilities of Recognize Text.
+# Recognize Text
+ Sample Console Apps that demonstrates the optical character recognition capabilities of Recognize Text.
+ 
+ [Recognizing printed and handwritten text](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-recognizing-text)
 
 ## Recognize-Text-Async
 
