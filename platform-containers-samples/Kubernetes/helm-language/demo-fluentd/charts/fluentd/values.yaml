@@ -1,0 +1,29 @@
+image:
+  repository: registry.hub.docker.com/fluent/fluentd
+## Specify an imagePullPolicy (Required)
+## It's recommended to change this to 'Always' if the image tag is 'latest'
+## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
+  tag: v2.3.1
+  pullPolicy: IfNotPresent
+
+rbac:
+  create: true
+
+livenessProbe:
+  enabled: true
+
+service:
+  type: LoadBalancer
+  ports:
+    - name: fluentdlogger
+      port: 24224
+
+configMaps:
+  containers.input.conf: |-
+    <source>
+      @type forward
+    </source>
+  output.conf: |
+    <match **>
+      @type stdout
+    </match>

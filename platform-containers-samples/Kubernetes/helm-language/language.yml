@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: language-frontend
+  labels:
+    run: language-frontend
+spec:
+  selector:
+    app: language-frontend
+  type: LoadBalancer
+  ports:
+  - name: front
+    port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: language-frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: language-frontend
+    spec:
+      containers:
+      - name: language-frontend
+        image: brwalsincubationregistry.azurecr.io/samples/languagefrontend
+        ports:
+        - name: public-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: public-port
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: regcredbrwals
+      automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: language
+  labels:
+    run: language
+spec:
+  selector:
+    app: language
+  type: LoadBalancer
+  ports:
+  - name: face
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: language
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: language
+    spec:
+      containers:
+      - name: language
+        image: containerpreview.azurecr.io/microsoft/cognitive-services-language
+        ports:
+        - name: public-port
+          containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: public-port
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+        args:
+            - "eula=accept"
+            - "apikey=$(apikey_secret)"
+            - "billing=https://wuppe.api.cognitive.microsoft.com"
+        env:
+        - name: apikey_secret
+          valueFrom:
+            secretKeyRef:
+              name: cogargs
+              key: apikey
+
+      imagePullSecrets:
+        - name: regcred
+      automountServiceAccountToken: false

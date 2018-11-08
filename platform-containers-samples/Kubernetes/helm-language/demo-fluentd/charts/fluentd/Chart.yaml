@@ -1,0 +1,16 @@
+name: fluentd
+version: 1.0.2
+appVersion: 2.3.1
+home: https://www.fluentd.org/
+description: A Fluentd Helm chart for Kubernetes with stdout output
+icon: https://raw.githubusercontent.com/fluent/fluentd-docs/master/public/logo/Fluentd_square.png
+keywords:
+- fluentd
+sources:
+- https://github.com/kubernetes/charts/stable/fluentd
+- https://github.com/fluent/fluentd-kubernetes-daemonset
+- https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd/fluentd-es-image
+maintainers:
+- name: brwals-msft
+  email: brwals@microsoft.com
+engine: gotpl
