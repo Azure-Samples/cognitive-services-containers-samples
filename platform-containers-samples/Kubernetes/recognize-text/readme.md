@@ -1,6 +1,6 @@
 # Recognize Text
 
-Simple kubernetets cluster with a frontend application that interfaces with the recognize text container.
+Simple Kubernetes cluster with a frontend application that interfaces with the recognize text container.
 
 ## Getting started
 
