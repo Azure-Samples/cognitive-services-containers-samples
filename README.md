@@ -40,3 +40,4 @@ Each sample has its own installation and run instructions in their corresponding
 - [Docker Documentation](https://docs.docker.com/)
 - [Azure Container Registry Documentation](https://docs.microsoft.com/en-us/azure/container-registry/)
 - [Container support in Azure Cognitive Services](https://review.docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-container-support?branch=release-cogserv-containers-support)
+- [Azure Cognitive Services Containers](https://github.com/Azure/CSContainers) - integrating Cognitive Services with Containers
