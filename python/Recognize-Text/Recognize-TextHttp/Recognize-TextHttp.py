@@ -3,7 +3,7 @@ from pprint import pprint
 
 face_uri = "http://localhost:5000/vision/v2.0/recognizetextDirect"
 
-pathToFileInDisk = r'd:\dd\Scratch\Cognitive\word.jpg'
+pathToFileInDisk = r'<path to image>'
 
 with open( pathToFileInDisk, 'rb' ) as f:
     data = f.read()
