@@ -7,7 +7,7 @@ Language is part of [Text Analytics](https://azure.microsoft.com/services/cognit
 These samples assume that you have the following pieces of software installed:
 
 * [Docker](https://www.docker.com/products/docker-desktop) (any platform is fine)
-* [Python](hhttps://www.python.org/) (any platform is fine)
+* [Python](https://www.python.org/) (any platform is fine)
 
 ## Getting started
 
