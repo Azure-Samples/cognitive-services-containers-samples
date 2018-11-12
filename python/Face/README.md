@@ -1,4 +1,4 @@
-# Face .NET Samples
+# Face Python Samples
 
 [Face](https://azure.microsoft.com/services/cognitive-services/face) can detect human faces in images as well as identifying attributes, including face landmarks (nose, eyes, etc.), gender, age, and other machine-predicted facial features. In addition to detection, Face can check to see if two people in an image or images are the same by using a confidence score, or compare it against a database to see if a similar-looking or identical face already exists. It can also organize similar faces into groups using shared visual traits.
 
@@ -9,7 +9,7 @@
 These samples assume that you have the following pieces of software installed:
 
 * [Docker](https://www.docker.com/products/docker-desktop) (any platform is fine)
-* [.NET Core](https://www.microsoft.com/net/download) (any platform is fine)
+* [Python](hhttps://www.python.org/) (any platform is fine)
 * Access to the gated preview
 
 ## Getting started
@@ -24,24 +24,13 @@ docker run --rm -it -p 5000:5000 <repository>/microsoft/cognitive-services-face 
 
 1. Browse and try out the container directly by going to `http://localhost:5000/swagger`.
 
-## Face Console App Using Face SDK
+## Face Using Basic HTTP
 
-Demonstrates how the [Microsoft.Azure.CognitiveServices.Vision.Face SDK](https://www.nuget.org/packages/Microsoft.Azure.CognitiveServices.Vision.Face) can be used to interact with a [Cognitive Services Face container](http://aka.ms/cognitive-services-containers).
-
-Run the sample directly from the command line by typing
-
-```
-cd FaceConsoleSdk
-dotnet run FaceConsoleSdk.csproj <image>
-```
-
-## Face Console App Using HttpClient
-
-Demonstrates how a basic [HttpClient](https://msdn.microsoft.com/en-us/library/system.net.http.httpclient) can be used to interact with a [Cognitive Services Face container](http://aka.ms/cognitive-services-containers).
+Demonstrates how to use basic HTTP to interact with a [Cognitive Services keyphrase container](http://aka.ms/cognitive-services-containers).
 
 Run the sample directly from the command line by typing
 
 ```
-cd FaceConsoleHttp
-dotnet run FaceConsoleHttp.csproj <image>
+cd FaceHttp
+python FaceHttp.py
 ```
