@@ -26,7 +26,7 @@ docker run --rm -it -p 5000:5000 <repository>/microsoft/cognitive-services-face 
 
 ## Face Using Basic HTTP
 
-Demonstrates how to use basic HTTP to interact with a [Cognitive Services keyphrase container](http://aka.ms/cognitive-services-containers).
+Demonstrates how to use basic HTTP to interact with a [Cognitive Services Face container](http://aka.ms/cognitive-services-containers).
 
 Run the sample directly from the command line by typing
 

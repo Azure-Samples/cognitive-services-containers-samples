@@ -23,7 +23,7 @@ docker run --rm -it -p 5000:5000 mcr.microsoft.com/azure-cognitive-services/keyp
 
 ## Keyphrase Using Basic Http
 
-Demonstrates how to use basic HTTP to interact with a [Cognitive Services keyphrase container](http://aka.ms/cognitive-services-containers).
+Demonstrates how to use basic HTTP to interact with a [Cognitive Services Keyphrase container](http://aka.ms/cognitive-services-containers).
 
 Run the sample directly from the command line by typing
 
