@@ -4,7 +4,7 @@ Simple Kubernetes cluster with a frontend application that interfaces with the r
 
 ## Getting started
 
-1. Build and upload the front end image : `Platform-Containers-Samples\dotnet\Recognize-Text\Recognize-Text-Webapp\Recognize-Text-Webapp` to container registry.
+1. Build and upload the front end image : `Recognize-Text-Webapp` to container registry.
 1. Set `recognizetext-frontend:image` to the name of the front end image in `recognizetext.yml`
 1. In `recognizetext.yml` under `imagePullSecrets`, replace `regcredbrwals` with credentials created for your container registry. [More information on pulling from a private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
 
