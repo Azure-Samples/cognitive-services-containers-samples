@@ -39,7 +39,7 @@ spec:
           timeoutSeconds: 1
           periodSeconds: 10
       imagePullSecrets:
-        - name: regcredbrwals # add credentials for registry containing frontend app here
+        - name: frontendregcred # add credentials for registry containing frontend app here
       automountServiceAccountToken: false
 ---
 apiVersion: v1
