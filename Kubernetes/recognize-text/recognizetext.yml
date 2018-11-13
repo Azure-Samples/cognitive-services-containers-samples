@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: recognizetext-frontend
-        image: brwalsincubationregistry.azurecr.io/samples/recognizetextfrontend
+        image: # Add frontend image name here
         ports:
         - name: public-port
           containerPort: 80
@@ -39,7 +39,7 @@ spec:
           timeoutSeconds: 1
           periodSeconds: 10
       imagePullSecrets:
-        - name: regcredbrwals
+        - name: regcredbrwals # add credentials for registry containing frontend app here
       automountServiceAccountToken: false
 ---
 apiVersion: v1
@@ -84,8 +84,8 @@ spec:
           periodSeconds: 10
         args:
             - "eula=accept"
-            - "apikey=apikeyplaceholder"
-            - "billing=billingpaceholder"
+            - "apikey=apikeyplaceholder" # Add API Key here
+            - "billing=billingpaceholder" # Add billing key here
       imagePullSecrets:
-        - name: regcred
+        - name: regcred # Add credentials for container preview registry here
       automountServiceAccountToken: false
