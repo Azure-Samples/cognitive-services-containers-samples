@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: recognizetext-frontend
+  labels:
+    run: recognizetext-frontend
+spec:
+  selector:
+    app: recognizetext-frontend
+  type: LoadBalancer
+  ports:
+  - name: front
+    port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: recognizetext-frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: recognizetext-frontend
+    spec:
+      containers:
+      - name: recognizetext-frontend
+        image: # Add frontend image name here
+        ports:
+        - name: public-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: public-port
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: frontendregcred # add credentials for registry containing frontend app here
+      automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recognizetext
+  labels:
+    run: recognizetext
+spec:
+  selector:
+    app: recognizetext
+  type: LoadBalancer
+  ports:
+  - name: recognizetext
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: recognizetext
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: recognizetext
+    spec:
+      containers:
+      - name: recognizetext
+        image: containerpreview.azurecr.io/microsoft/cognitive-services-recognize-text:latest
+        ports:
+        - name: public-port
+          containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: public-port
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+        args:
+            - "eula=accept"
+            - "apikey=apikeyplaceholder" # Add API Key here
+            - "billing=billingpaceholder" # Add billing key here
+      imagePullSecrets:
+        - name: regcred # Add credentials for container preview registry here
+      automountServiceAccountToken: false
