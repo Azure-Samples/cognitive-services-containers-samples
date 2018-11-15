@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: recognizetext-frontend
+  name: face-frontend
   labels:
-    run: recognizetext-frontend
+    run: face-frontend
 spec:
   selector:
-    app: recognizetext-frontend
+    app: face-frontend
   type: LoadBalancer
   ports:
   - name: front
@@ -17,16 +17,16 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: recognizetext-frontend
+  name: face-frontend
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: recognizetext-frontend
+        app: face-frontend
     spec:
       containers:
-      - name: recognizetext-frontend
+      - name: face-frontend
         image: # Add frontend image name here
         ports:
         - name: public-port
@@ -45,15 +45,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: recognizetext
+  name: face
   labels:
-    run: recognizetext
+    run: face
 spec:
   selector:
-    app: recognizetext
+    app: face
   type: LoadBalancer
   ports:
-  - name: recognizetext
+  - name: face
     port: 5000
     targetPort: 5000
     protocol: TCP
@@ -61,17 +61,17 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: recognizetext
+  name: face
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: recognizetext
+        app: face
     spec:
       containers:
-      - name: recognizetext
-        image: containerpreview.azurecr.io/microsoft/cognitive-services-recognize-text:latest
+      - name: face
+        image: containerpreview.azurecr.io/microsoft/cognitive-services-face:latest
         ports:
         - name: public-port
           containerPort: 5000
