@@ -4,7 +4,7 @@ Simple Kubernetes cluster with a frontend application that interfaces with the r
 
 ## Getting started
 
-1. Build and upload the front end image : `Face-Webapp` to container registry.
+1. Build and upload the front end image : `Face-Webapp` to the container registry.
 2. Set the frontend image value in `face.yml`.
 3. In `face.yml` under `imagePullSecrets`, replace `frontendregcred` with credentials created for your container registry. [More information on pulling from a private registry](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)
 
