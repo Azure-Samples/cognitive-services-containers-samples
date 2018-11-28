@@ -51,7 +51,7 @@ namespace Face_Webapp.Controllers
 
             await TrainGroup();
 
-            return Ok("Training complete.")
+            return Ok("Training complete.");
         }
 
         private async Task AddToGroup(Stream image)
