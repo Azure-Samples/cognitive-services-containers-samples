@@ -35,8 +35,8 @@ namespace Face_Webapp.Controllers
                 {
                     using (var stream = formFile.OpenReadStream())
                     {
-                        var lines = await IdentifyFace(stream);
-                        faceData += "\n" + formFile.FileName + ": \n" + lines;
+                        var identified = await IdentifyFace(stream);
+                        faceData += "\n" + formFile.FileName + ": \n" + identified + "\n";
                     }
                 }
             }
@@ -54,13 +54,12 @@ namespace Face_Webapp.Controllers
 
                 if (detectedFaces == null || detectedFaces.Count == 0)
                 {
-                    responseString = ">No faces detected from image.";
+                    responseString = "No faces detected from image.";
                 }
                 else
                 {
                     // IList does not define the Select method
                     var faceIds = new List<Guid>();
-
                     foreach(var face in detectedFaces)
                     {
                         faceIds.Add(face.FaceId.Value);
