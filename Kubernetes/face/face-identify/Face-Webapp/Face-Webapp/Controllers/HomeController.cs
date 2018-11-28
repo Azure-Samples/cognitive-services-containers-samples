@@ -14,6 +14,21 @@ namespace Face_Webapp.Controllers
         // ApiKey is not needed on client side talking to a container
         private const string ApiKey = "00000000000000000000000000000000";
         private const string Endpoint = "http://face:5000";
+        private const string GroupId = "group-id";
+
+        private FaceClient _client;
+
+        public HomeController()
+        {
+            _client = new FaceClient(new ApiKeyServiceClientCredentials(ApiKey)) { Endpoint = Endpoint };
+            Task.WaitAll(CreateGroup());
+        }
+
+        ~HomeController()
+        {
+            _client.Dispose();
+        }
+
 
         public IActionResult Index()
         {
@@ -23,50 +38,36 @@ namespace Face_Webapp.Controllers
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> Post(List<IFormFile> files)
         {
-            string recognizedText = string.Empty;
-            var filePath = Path.GetTempFileName();
-
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
                 {
                     using (var stream = formFile.OpenReadStream())
                     {
-                        var lines = await ExtractFace(stream);
-                        recognizedText += "\n" + formFile.FileName + ": \n" + lines;
+                        await AddToGroup(stream);
                     }
                 }
             }
-            return Ok(recognizedText);
+
+            await TrainGroup();
+
+            return Ok("Training complete.")
         }
 
-        private async Task<String> ExtractFace(Stream image)
+        private async Task AddToGroup(Stream image)
         {
-            String responseString = string.Empty;
+            var person = await _client.PersonGroupPerson.CreateAsync(GroupId);
+            await _client.PersonGroupPerson.AddFaceFromStreamAsync(GroupId, person.PersonId, image);
+        }
 
-            using (var client = new FaceClient(new ApiKeyServiceClientCredentials(ApiKey)) { Endpoint = Endpoint })
-            {
-                var attributes = new FaceAttributeType[] { FaceAttributeType.Gender, FaceAttributeType.Age, FaceAttributeType.Smile, FaceAttributeType.Glasses };
-                var detectedFaces = await client.Face.DetectWithStreamAsync(image, returnFaceAttributes: attributes);
+        private async Task CreateGroup()
+        {
+            await _client.PersonGroup.CreateAsync(GroupId);
+        }
 
-                if (detectedFaces?.Count == 0)
-                {
-                    responseString = ">No faces detected from image.";
-                }
-                else
-                {
-                    foreach (var face in detectedFaces)
-                    {
-                        var rect = face.FaceRectangle;
-                        responseString = $">Rectangle: {rect.Left} {rect.Top} {rect.Width} {rect.Height}\n";
-                        responseString += $">Gender: {face.FaceAttributes.Gender}\n";
-                        responseString += $">Age: {face.FaceAttributes.Age}\n";
-                        responseString += $">Smile: {face.FaceAttributes.Smile}\n";
-                        responseString += $">Glasses: {face.FaceAttributes.Glasses}\n";
-                    }
-                }
-            }
-            return responseString;
+        private async Task TrainGroup()
+        {
+            await _client.PersonGroup.TrainAsync(GroupId);
         }
 
     }
