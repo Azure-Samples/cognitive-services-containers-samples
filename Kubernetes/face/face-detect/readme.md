@@ -1,4 +1,4 @@
-# Recognize Text
+# Face Detect
 
 Simple Kubernetes cluster with a frontend application that interfaces with the Face container and demonstrates its 'Detect' functionality.
 
