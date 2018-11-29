@@ -31,7 +31,7 @@ spec:
         app: language
     spec:
       imagePullSecrets:
-      - name: cdpxregistry
+      - name: {{ .Values.Language.RegistrySecret }}
       containers:
       - name: language
         image: {{ .Values.Language.Image }}

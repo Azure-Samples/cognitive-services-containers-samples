@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: language-frontend
-        image: brwalsincubationregistry.azurecr.io/samples/languagefrontend
+        image: # < URI of the Frontend App image >
         ports:
         - name: public-port
           containerPort: 80
@@ -39,7 +39,7 @@ spec:
           timeoutSeconds: 1
           periodSeconds: 10
       imagePullSecrets:
-        - name: regcredbrwals
+        - name: # < Name of the registry secret providing access to the frontend image >
       automountServiceAccountToken: false
 ---
 apiVersion: v1
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: language
-        image: containerpreview.azurecr.io/microsoft/cognitive-services-language
+        image: # < URI of the Language Image >
         ports:
         - name: public-port
           containerPort: 5000
@@ -84,15 +84,10 @@ spec:
           periodSeconds: 10
         args:
             - "eula=accept"
-            - "apikey=$(apikey_secret)"
-            - "billing=https://wuppe.api.cognitive.microsoft.com"
-        env:
-        - name: apikey_secret
-          valueFrom:
-            secretKeyRef:
-              name: cogargs
-              key: apikey
+            - "apikey=" # < API Key for the Language Service >
+            - "billing=" # < Language billing endpoint URI >
 
       imagePullSecrets:
-        - name: regcred
+        - name: # < Name of the registry secret providing access to the Language image >
+
       automountServiceAccountToken: false
