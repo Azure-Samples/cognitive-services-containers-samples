@@ -12,13 +12,8 @@ namespace Face_Webapp.Controllers
     
     public class IdentifyController : Controller
     {
-        // ApiKey is not needed on client side talking to a container
-        private const string ApiKey = "00000000000000000000000000000000";
-        private const string Endpoint = "http://face:5000";
-        private const string GroupId = "group-id";
-
         [HttpGet("/identify")]
-        public IActionResult Index()
+        public IActionResult Identify()
         {
             return View();
         }
@@ -27,7 +22,6 @@ namespace Face_Webapp.Controllers
         public async Task<IActionResult> Post(List<IFormFile> files)
         {
             string faceData = string.Empty;
-            var filePath = Path.GetTempFileName();
 
             foreach (var formFile in files)
             {
@@ -47,7 +41,7 @@ namespace Face_Webapp.Controllers
         {
             String responseString = string.Empty;
 
-            using (var client = new FaceClient(new ApiKeyServiceClientCredentials(ApiKey)) { Endpoint = Endpoint })
+            using (var client = new FaceClient(new ApiKeyServiceClientCredentials(HomeController.ApiKey)) { Endpoint = HomeController.Endpoint })
             {
                 var attributes = new FaceAttributeType[] { FaceAttributeType.Gender, FaceAttributeType.Age, FaceAttributeType.Smile, FaceAttributeType.Glasses };
                 var detectedFaces = await client.Face.DetectWithStreamAsync(image, returnFaceAttributes: attributes);
@@ -65,11 +59,28 @@ namespace Face_Webapp.Controllers
                         faceIds.Add(face.FaceId.Value);
                     }
 
-                    var result = await client.Face.IdentifyAsync(faceIds, GroupId);
-                    responseString = result.ToString();
+                    var personList = await client.Face.IdentifyAsync(faceIds, HomeController.GroupId);
+
+                    foreach (var person in personList)
+                    {
+                        responseString += ExtractCandidates(person);
+                    }
                 }
             }
             return responseString;
+        }
+
+        private string ExtractCandidates(IdentifyResult person)
+        {
+            string candidateString = $"Possible candidates for {person.FaceId}:\n";
+            var candidates = person.Candidates;
+
+            foreach (var candidate in candidates)
+            {
+                candidateString += "> " + candidate.PersonId + " with confidence " + candidate.Confidence + "\n";
+            }
+
+            return candidateString;
         }
 
     }

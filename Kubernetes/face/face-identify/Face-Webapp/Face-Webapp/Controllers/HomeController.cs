@@ -12,23 +12,12 @@ namespace Face_Webapp.Controllers
     public class HomeController : Controller
     {
         // ApiKey is not needed on client side talking to a container
-        private const string ApiKey = "00000000000000000000000000000000";
-        private const string Endpoint = "http://face:5000";
-        private const string GroupId = "group-id";
+        public static string ApiKey = "00000000000000000000000000000000";
+        public static string Endpoint = "http://face:5000";
+        public static string GroupId = "mypersongroupid";
+        public static string GroupName = "mypersongroupname";
 
-        private FaceClient _client;
-
-        public HomeController()
-        {
-            _client = new FaceClient(new ApiKeyServiceClientCredentials(ApiKey)) { Endpoint = Endpoint };
-            Task.WaitAll(CreateGroup());
-        }
-
-        ~HomeController()
-        {
-            _client.Dispose();
-        }
-
+        private FaceClient _client = null;
 
         public IActionResult Index()
         {
@@ -38,6 +27,7 @@ namespace Face_Webapp.Controllers
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> Post(List<IFormFile> files)
         {
+            await CreateGroup();
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
@@ -49,26 +39,21 @@ namespace Face_Webapp.Controllers
                 }
             }
 
-            await TrainGroup();
-
-            return Ok("Training complete.");
+            await _client.PersonGroup.TrainAsync(GroupId);
+            return View("~/Views/Identify/Identify.cshtml");
         }
 
         private async Task AddToGroup(Stream image)
         {
-            var person = await _client.PersonGroupPerson.CreateAsync(GroupId);
+            var personName = Guid.NewGuid().ToString();
+            var person = await _client.PersonGroupPerson.CreateAsync(GroupId, personName);
             await _client.PersonGroupPerson.AddFaceFromStreamAsync(GroupId, person.PersonId, image);
         }
 
         private async Task CreateGroup()
         {
-            await _client.PersonGroup.CreateAsync(GroupId);
+            _client = new FaceClient(new ApiKeyServiceClientCredentials(ApiKey)) { Endpoint = Endpoint };
+            await _client.PersonGroup.CreateAsync(GroupId, GroupName);
         }
-
-        private async Task TrainGroup()
-        {
-            await _client.PersonGroup.TrainAsync(GroupId);
-        }
-
     }
 }
