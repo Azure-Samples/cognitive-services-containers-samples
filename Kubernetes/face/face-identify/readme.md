@@ -1,6 +1,6 @@
 # Recognize Text
 
-Simple Kubernetes cluster with a frontend application that interfaces with the recognize text container.
+Simple Kubernetes cluster with a frontend application that interfaces with the Face container and demonstrates how to use 'Person Group' and 'Identify'.
 
 ## Getting started
 
