@@ -1,0 +1,20 @@
+Frontend:
+  Replicas: 1
+  Service:
+    type: LoadBalancer
+  Image: # < URI of the Frontend App image >
+  RegistrySecret: # < Name of the registry secret providing access to the frontend image >
+
+LUIS:
+  Replicas: 1
+  Service:
+    type: LoadBalancer
+  Image: # < URI of the LUIS image >
+  RegistrySecret: # < Name of the registry secret providing access to the LUIS image >
+  Billing:
+    Endpoint: # < LUIS billing endpoint URI >
+    APIKey: # < API Key for the LUIS Service >
+
+AzureFileStorage:
+  Secret: # < Name of the secret containing Azure Storage credentials >
+  FileShareName: # < Name of the file share on Azure Storage containing the LUIS models >

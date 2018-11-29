@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: luis
+  labels:
+    run: luis
+spec:
+  selector:
+    app: luis
+  type: {{ .Values.LUIS.Service.type }}
+  ports:
+  - name: luis
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: luis
+  labels:
+    app: luis
+spec:
+  replicas: {{ .Values.LUIS.Replicas }}
+  selector:
+    matchLabels:
+      app: luis
+  template:
+    metadata:
+      labels:
+        app: luis
+    spec:
+      imagePullSecrets:
+      - name:  {{ .Values.LUIS.RegistrySecret }}
+      containers:
+      - name: luis
+        image: {{ .Values.LUIS.Image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort:  5000
+            protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        args:
+            - "eula=accept"
+            - "apikey={{ .Values.LUIS.Billing.APIKey }}"
+            - "billing={{ .Values.LUIS.Billing.Endpoint }}"
+            - "Logging:Console:LogLevel:Default=Information"
+
+        volumeMounts:
+        - name: luis-storage
+          mountPath: /input
+
+      volumes:
+      - name: luis-storage
+        azureFile:
+          secretName: {{ .Values.AzureFileStorage.Secret }}
+          shareName: {{ .Values.AzureFileStorage.FileShareName }}
+          readOnly: true

@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: luis-frontend
+  labels:
+    run: luis-frontend
+spec:
+  selector:
+    app: luis-frontend
+  type: {{ .Values.Frontend.Service.type }}
+  ports:
+  - name: front
+    port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: luis-frontend
+spec:
+  replicas: {{ .Values.Frontend.Replicas }}
+  template:
+    metadata:
+      labels:
+        app: luis-frontend
+    spec:
+      containers:
+      - name: luis-frontend
+        image: {{ .Values.Frontend.Image }}
+        ports:
+        - name: public-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: public-port
+        readinessProbe:
+          httpGet:
+            path: /
+            port: public-port
+        env:
+        - name: luis_URI
+          value: "http://luis:5000"
+
+      imagePullSecrets:
+      - name: {{ .Values.Frontend.RegistrySecret }}
+
+      automountServiceAccountToken: false
