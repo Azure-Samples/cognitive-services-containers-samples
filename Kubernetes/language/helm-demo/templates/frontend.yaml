@@ -44,6 +44,6 @@ spec:
           value: "http://language:5000"
 
       imagePullSecrets:
-      - name: brwalsregistry
+      - name: {{ .Values.Frontend.RegistrySecret }}
         
       automountServiceAccountToken: false

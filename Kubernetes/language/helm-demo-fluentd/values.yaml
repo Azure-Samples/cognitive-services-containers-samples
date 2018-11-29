@@ -1,0 +1,18 @@
+Frontend:
+  Replicas: 1
+  Service:
+    type: LoadBalancer
+  Image: # < URI of the Frontend App image >
+  RegistrySecret: # < Name of the registry secret providing access to the frontend image >
+
+Language:
+  Replicas: 1
+  Service:
+    type: LoadBalancer
+  Image: # < URI of the Language Image >
+  RegistrySecret: # < Name of the registry secret providing access to the Language image >
+
+Configuration:
+  KeyVault:
+    Id: # < ID of the entity provided authentication for the KeyVault >
+    Secret: # < Name of the secret containing login credentials for the KeyVault >

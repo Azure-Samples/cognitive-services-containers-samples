@@ -39,7 +39,7 @@ spec:
           timeoutSeconds: 1
           periodSeconds: 10
       imagePullSecrets:
-        - name: frontendregcred # add credentials for registry containing frontend app here
+        - name: # add credentials for registry containing frontend app here
       automountServiceAccountToken: false
 ---
 apiVersion: v1
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: recognizetext
-        image: containerpreview.azurecr.io/microsoft/cognitive-services-recognize-text:latest
+        image: # Add URI for Recognize Text image here
         ports:
         - name: public-port
           containerPort: 5000
@@ -87,5 +87,5 @@ spec:
             - "apikey=apikeyplaceholder" # Add API Key here
             - "billing=billingpaceholder" # Add billing key here
       imagePullSecrets:
-        - name: regcred # Add credentials for container preview registry here
+        - name: # Add credentials for container preview registry here
       automountServiceAccountToken: false
