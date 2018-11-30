@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: luis-frontend
+  name: language-understanding-frontend
   labels:
-    run: luis-frontend
+    run: language-understanding-frontend
 spec:
   selector:
-    app: luis-frontend
+    app: language-understanding-frontend
   type: LoadBalancer
   ports:
   - name: front
@@ -17,16 +17,16 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: luis-frontend
+  name: language-understanding-frontend
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: luis-frontend
+        app: language-understanding-frontend
     spec:
       containers:
-      - name: luis-frontend
+      - name: language-understanding-frontend
         image: # < URI of the Frontend App image >
         ports:
         - name: public-port
@@ -45,12 +45,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: luis
+  name: language-understanding
   labels:
-    run: luis
+    run: language-understanding
 spec:
   selector:
-    app: luis
+    app: language-understanding
   type: LoadBalancer
   ports:
   - name: face
@@ -61,17 +61,17 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: luis
+  name: language-understanding
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: luis
+        app: language-understanding
     spec:
       containers:
-      - name: luis
-        image: # < URI of the LUIS Image >
+      - name: language-understanding
+        image: # < URI of the language-understanding Image >
         ports:
         - name: public-port
           containerPort: 5000
@@ -84,20 +84,20 @@ spec:
           periodSeconds: 10
         args:
             - "eula=accept"
-            - "apikey=" # < API Key for the LUIS Service >
-            - "billing=" # < LUIS billing endpoint URI >
+            - "apikey=" # < API Key for the Language Understanding Service >
+            - "billing=" # < Language Understanding billing endpoint URI >
         volumeMounts:
-        - name: luis-storage
+        - name: language-understanding-storage
           mountPath: /input
 
       imagePullSecrets:
-        - name: # < Name of the registry secret providing access to the LUIS image >
+        - name: # < Name of the registry secret providing access to the Language Understanding image >
 
       automountServiceAccountToken: false
 
       volumes:
-      - name: luis-storage
+      - name: language-understanding-storage
         azureFile:
           secretName: # < Name of the secret containing Azure Storage credentials >
-          shareName: # < Name of the file share on Azure Storage containing the LUIS models >
+          shareName: # < Name of the file share on Azure Storage containing the Language Understanding models >
           readOnly: true

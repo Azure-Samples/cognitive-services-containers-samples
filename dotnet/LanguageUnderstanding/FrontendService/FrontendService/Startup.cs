@@ -33,7 +33,7 @@ namespace FrontendService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                LUISController.ServiceEndpoint = "http://localhost:5000";
+                LanguageUnderstandingController.ServiceEndpoint = "http://localhost:5000";
             }
             app.UseMvc();
         }

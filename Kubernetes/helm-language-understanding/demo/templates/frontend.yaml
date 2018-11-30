@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: luis-frontend
+  name: language-understanding-frontend
   labels:
-    run: luis-frontend
+    run: language-understanding-frontend
 spec:
   selector:
-    app: luis-frontend
+    app: language-understanding-frontend
   type: {{ .Values.Frontend.Service.type }}
   ports:
   - name: front
@@ -17,16 +17,16 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: luis-frontend
+  name: language-understanding-frontend
 spec:
   replicas: {{ .Values.Frontend.Replicas }}
   template:
     metadata:
       labels:
-        app: luis-frontend
+        app: language-understanding-frontend
     spec:
       containers:
-      - name: luis-frontend
+      - name: language-understanding-frontend
         image: {{ .Values.Frontend.Image }}
         ports:
         - name: public-port
@@ -40,8 +40,8 @@ spec:
             path: /
             port: public-port
         env:
-        - name: luis_URI
-          value: "http://luis:5000"
+        - name: language-understanding_URI
+          value: "http://language-understanding:5000"
 
       imagePullSecrets:
       - name: {{ .Values.Frontend.RegistrySecret }}

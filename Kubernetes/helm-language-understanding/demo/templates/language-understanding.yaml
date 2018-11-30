@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: luis
+  name: language-understanding
   labels:
-    run: luis
+    run: language-understanding
 spec:
   selector:
-    app: luis
-  type: {{ .Values.LUIS.Service.type }}
+    app: language-understanding
+  type: {{ .Values.LanguageUnderstanding.Service.type }}
   ports:
-  - name: luis
+  - name: language-understanding
     port: 5000
     targetPort: 5000
     protocol: TCP
@@ -17,24 +17,24 @@ spec:
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: luis
+  name: language-understanding
   labels:
-    app: luis
+    app: language-understanding
 spec:
-  replicas: {{ .Values.LUIS.Replicas }}
+  replicas: {{ .Values.LanguageUnderstanding.Replicas }}
   selector:
     matchLabels:
-      app: luis
+      app: language-understanding
   template:
     metadata:
       labels:
-        app: luis
+        app: language-understanding
     spec:
       imagePullSecrets:
-      - name:  {{ .Values.LUIS.RegistrySecret }}
+      - name:  {{ .Values.LanguageUnderstanding.RegistrySecret }}
       containers:
-      - name: luis
-        image: {{ .Values.LUIS.Image }}
+      - name: language-understanding
+        image: {{ .Values.LanguageUnderstanding.Image }}
         imagePullPolicy: IfNotPresent
         ports:
           - name: http
@@ -50,16 +50,16 @@ spec:
             port: http
         args:
             - "eula=accept"
-            - "apikey={{ .Values.LUIS.Billing.APIKey }}"
-            - "billing={{ .Values.LUIS.Billing.Endpoint }}"
+            - "apikey={{ .Values.LanguageUnderstanding.Billing.APIKey }}"
+            - "billing={{ .Values.LanguageUnderstanding.Billing.Endpoint }}"
             - "Logging:Console:LogLevel:Default=Information"
 
         volumeMounts:
-        - name: luis-storage
+        - name: language-understanding-storage
           mountPath: /input
 
       volumes:
-      - name: luis-storage
+      - name: language-understanding-storage
         azureFile:
           secretName: {{ .Values.AzureFileStorage.Secret }}
           shareName: {{ .Values.AzureFileStorage.FileShareName }}

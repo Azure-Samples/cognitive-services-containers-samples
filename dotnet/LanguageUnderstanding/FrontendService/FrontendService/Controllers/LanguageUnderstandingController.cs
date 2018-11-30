@@ -8,13 +8,13 @@ namespace FrontendService.Controllers
     public class MockCredentials : ServiceClientCredentials {}
 
     [Route("/")]
-    public class LUISController : Controller
+    public class LanguageUnderstandingController : Controller
     {
-        public static string ServiceEndpoint = "http://luis:5000";
+        public static string ServiceEndpoint = "http://language-understanding:5000";
         private const string APP_NAME = "da63910e-dddf-4c2f-a38f-a250a91ca176";
         private ILUISRuntimeClient _luisClient;
 
-        public LUISController()
+        public LanguageUnderstandingController()
         {
             _luisClient = new LUISRuntimeClient(new MockCredentials())
             {
