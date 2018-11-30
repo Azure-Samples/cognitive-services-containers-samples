@@ -38,7 +38,7 @@ Edit the `values.yaml` and replace all comments with the relevant values. If it 
 
 With [Helm](https://docs.helm.sh/using_helm/), the application can be deployed in one command
 ```helm
-helm install -n language-understanding .\demo\
+helm install -n language-understanding .\helm-demo\
 ```
 
 If all values have been provided, this will display a summary of the cluster deployment. You can follow the deployment of pods with `kubectl get pods --watch`. This sample will also create services to expose the app over a public IP. In order to see when these IPs have been exposed as quickly as possible, you may use `kubectl get services --watch`.
