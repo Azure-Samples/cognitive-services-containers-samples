@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: language-understanding
+  labels:
+    run: language-understanding
+spec:
+  selector:
+    app: language-understanding
+  type: {{ .Values.LanguageUnderstanding.Service.type }}
+  ports:
+  - name: language-understanding
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: language-understanding
+  labels:
+    app: language-understanding
+spec:
+  replicas: {{ .Values.LanguageUnderstanding.Replicas }}
+  selector:
+    matchLabels:
+      app: language-understanding
+  template:
+    metadata:
+      labels:
+        app: language-understanding
+    spec:
+      imagePullSecrets:
+      - name:  {{ .Values.LanguageUnderstanding.RegistrySecret }}
+      containers:
+      - name: language-understanding
+        image: {{ .Values.LanguageUnderstanding.Image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort:  5000
+            protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+        args:
+            - "eula=accept"
+            - "apikey={{ .Values.LanguageUnderstanding.Billing.APIKey }}"
+            - "billing={{ .Values.LanguageUnderstanding.Billing.Endpoint }}"
+            - "Logging:Console:LogLevel:Default=Information"
+
+        volumeMounts:
+        - name: language-understanding-storage
+          mountPath: /input
+
+      volumes:
+      - name: language-understanding-storage
+        azureFile:
+          secretName: {{ .Values.AzureFileStorage.Secret }}
+          shareName: {{ .Values.AzureFileStorage.FileShareName }}
+          readOnly: true
