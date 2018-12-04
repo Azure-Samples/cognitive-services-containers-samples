@@ -33,6 +33,9 @@ namespace FrontendService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // This allows the application to work when run locally with docker-compose.
+                // In this case, the SDK will direct requests to localhost:5000 instead of the hostname of the Kubernetes service
                 LanguageController.ServiceEndpoint = "http://localhost:5000";
             }
             app.UseMvc();
