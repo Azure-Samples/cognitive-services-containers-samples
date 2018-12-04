@@ -1,0 +1,24 @@
+# values.yaml
+# This file contains values for variables that are referenced from yaml files in the templates directory.
+# Comments here should be replaced with values appropriate to your deployment.
+
+Frontend:
+  Replicas: 1
+  Service:
+    type: LoadBalancer
+  Image: # < URI of the Frontend App image >
+  RegistrySecret: # < Name of the registry secret providing access to the frontend image >
+
+LanguageUnderstanding:
+  Replicas: 1
+  Service:
+    type: LoadBalancer
+  Image: # < URI of the Language Understanding image >
+  RegistrySecret: # < Name of the registry secret providing access to the Language Understanding image >
+  Billing:
+    Endpoint: # < Language Understanding billing endpoint URI >
+    APIKey: # < API Key for the Language Understanding Service >
+
+AzureFileStorage:
+  Secret: # < Name of the secret containing Azure Storage credentials >
+  FileShareName: # < Name of the file share on Azure Storage containing the Language Understanding models >

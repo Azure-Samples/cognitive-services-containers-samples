@@ -1,0 +1,107 @@
+# A service which exposes the .net frontend app container through a dependable hostname: http://language-understanding-frontend:5000
+apiVersion: v1
+kind: Service
+metadata:
+  name: language-understanding-frontend
+  labels:
+    run: language-understanding-frontend
+spec:
+  selector:
+    app: language-understanding-frontend
+  type: LoadBalancer
+  ports:
+  - name: front
+    port: 80
+    targetPort: 80
+    protocol: TCP
+---
+# A deployment declaratively indicating how many instances of the .net frontend app container we want up
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: language-understanding-frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: language-understanding-frontend
+    spec:
+      containers:
+      - name: language-understanding-frontend
+        image: # < URI of the Frontend App image >
+        ports:
+        - name: public-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: public-port
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+      imagePullSecrets:
+        - name: # < Name of the registry secret providing access to the frontend image >
+      automountServiceAccountToken: false
+---
+# A service which exposes the cognitive-service containers through a dependable hostname: http://language-understanding:5000
+apiVersion: v1
+kind: Service
+metadata:
+  name: language-understanding
+  labels:
+    run: language-understanding
+spec:
+  selector:
+    app: language-understanding
+  type: LoadBalancer
+  ports:
+  - name: face
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+---
+# A deployment declaratively indicating how many instances of the cognitive-service container we want up
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: language-understanding
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: language-understanding
+    spec:
+      containers:
+      - name: language-understanding
+        image: # < URI of the language-understanding Image >
+        ports:
+        - name: public-port
+          containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /status
+            port: public-port
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 10
+        args:
+            - "eula=accept"
+            - "apikey=" # < API Key for the Language Understanding Service >
+            - "billing=" # < Language Understanding billing endpoint URI >
+        volumeMounts:
+        - name: language-understanding-storage
+          mountPath: /input
+
+      imagePullSecrets:
+        - name: # < Name of the registry secret providing access to the Language Understanding image >
+
+      automountServiceAccountToken: false
+
+      volumes:
+      - name: language-understanding-storage
+        azureFile:
+          secretName: # < Name of the secret containing Azure Storage credentials >
+          shareName: # < Name of the file share on Azure Storage containing the Language Understanding models >
+          readOnly: true

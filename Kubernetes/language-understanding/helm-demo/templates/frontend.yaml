@@ -1,0 +1,51 @@
+# Generic declaration of the kubernetes elements necessary for the cognitive service frontend sample application
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: language-understanding-frontend
+  labels:
+    run: language-understanding-frontend
+spec:
+  selector:
+    app: language-understanding-frontend
+  type: {{ .Values.Frontend.Service.type }}
+  ports:
+  - name: front
+    port: 80
+    targetPort: 80
+    protocol: TCP
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: language-understanding-frontend
+spec:
+  replicas: {{ .Values.Frontend.Replicas }}
+  template:
+    metadata:
+      labels:
+        app: language-understanding-frontend
+    spec:
+      containers:
+      - name: language-understanding-frontend
+        image: {{ .Values.Frontend.Image }}
+        ports:
+        - name: public-port
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: public-port
+        readinessProbe:
+          httpGet:
+            path: /
+            port: public-port
+        env:
+        - name: language-understanding_URI
+          value: "http://language-understanding:5000"
+
+      imagePullSecrets:
+      - name: {{ .Values.Frontend.RegistrySecret }}
+
+      automountServiceAccountToken: false
