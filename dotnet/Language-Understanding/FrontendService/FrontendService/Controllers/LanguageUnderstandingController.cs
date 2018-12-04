@@ -42,12 +42,12 @@ namespace FrontendService.Controllers
         }
 
         /// <summary>
-        /// Detects the language of text retrieved from the HTTP route.!--
-        /// Example:  http://<ip>:<port>/Hello World!
-        /// Response: English
+        /// Detects the intent of text retrieved from the HTTP route.
+        /// Example:  http://<ip>:<port>/Book a flight to Cairo.
+        /// Response: Book a Journey
         /// </summary>
         [HttpGet("{text}")]
-        public async Task<string> DetectLanguage([FromRoute] string text)
+        public async Task<string> DetectIntent([FromRoute] string text)
         {
             var result = await _luisClient.Prediction.ResolveAsync(APP_NAME, text);
             return result.TopScoringIntent.Intent;
