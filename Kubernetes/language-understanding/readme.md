@@ -47,6 +47,6 @@ If all values have been provided, this will display a summary of the cluster dep
 
 Once the helm app has been deployed and the relevant pods and services are ready, it's time to test out the app!
 
-Run `kk get services language-understanding-frontend` to see the `EXTERNAL-IP` of the Language Understanding frontend service. 
+Run `kubectl get services language-understanding-frontend` to see the `EXTERNAL-IP` of the Language Understanding frontend service. 
 
 Point your browser, or other preferred HTTP request generator, to this IP and make a request like `http://<ip-address>/Book a flight to Cairo/` and the frontend will return the determined intent of your utterance, such as `"Book a journey"`!
