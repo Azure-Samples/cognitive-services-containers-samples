@@ -1,3 +1,5 @@
+# Generic declaration of the kubernetes elements necessary for the cognitive service frontend sample application
+
 apiVersion: v1
 kind: Service
 metadata:
