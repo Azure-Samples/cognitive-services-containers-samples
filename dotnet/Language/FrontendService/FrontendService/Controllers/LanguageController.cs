@@ -13,23 +13,38 @@ namespace FrontendService.Controllers
     [Route("/")]
     public class LanguageController : Controller
     {
+        // The hostname and port of the Kubernetes service which exposes the cognitive service container(s)
+        //
+        // Instead of hardcoding the hostname and port, environmental variables can be used to discover this address at runtime: 
+        // https://kubernetes.io/docs/concepts/containers/container-environment-variables/#cluster-information
         public static string ServiceEndpoint = "http://language:5000";
+
+        // The Client SDK which can be used to make requests to either your self-hosted cognitive service container or the cloud api.
         private ITextAnalyticsClient _taClient;
 
         public LanguageController()
         {
             _taClient = new TextAnalyticsClient(new MockCredentials())
             {
+                // Ensure the sdk client makes requests to your cognitive service containers instead of the cloud API
                 Endpoint = ServiceEndpoint
             };
         }
 
+        /// <summary>
+        /// A simple health endpoint used for availability and readiness monitoring in Kubernetes.
+        /// </summary>
+        /// <returns>Always returns "healthy" if the app is able.</returns>
         public string Get()
         {
             return "healthy";
         }
 
-        // POST api/values
+        /// <summary>
+        /// Detects the language of text retrieved from the HTTP route.!--
+        /// Example:  http://<ip>:<port>/Hello World!
+        /// Response: English
+        /// </summary>
         [HttpGet("{text}")]
         public async Task<string> DetectLanguage([FromRoute] string text)
         {

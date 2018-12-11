@@ -1,3 +1,7 @@
+# values.yaml
+# This file contains values for variables that are referenced from yaml files in the templates directory.
+# Comments here should be replaced with values appropriate to your deployment.
+
 Frontend:
   Replicas: 1
   Service:
