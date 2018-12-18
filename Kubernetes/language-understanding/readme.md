@@ -4,7 +4,7 @@ These instructions will guide you through building and deploying a simple Kubern
 
 # Provisioning a Kubernetes cluster
 
-The Cognitive Services Containers can be run in any internet and container-enabled environment, but for this example we'll show how the Azure Kubernetes Service can be used to quickly get a cognitive-services enabled app up and running.
+The Cognitive Services Containers can be run in either Customer's hardware devices that are dedicated to Customer's exclusive use, or in Customer's Microsoft Azure accounts. For this example we'll show how the Azure Kubernetes Service can be used to quickly get a cognitive-services enabled app up and running.
 
 See the [Azure Kubernetes Service (AKS) ](https://docs.microsoft.com/en-us/azure/aks/) documentation for more information about setting up a cluster. Once you have a cluster available and [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) configured to access the cluster from a dev machine, continue with provisioning a Persistent Storage Solution.
 
