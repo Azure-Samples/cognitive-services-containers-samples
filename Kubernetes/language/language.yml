@@ -56,7 +56,7 @@ spec:
     app: language
   type: LoadBalancer
   ports:
-  - name: face
+  - name: language
     port: 5000
     targetPort: 5000
     protocol: TCP
