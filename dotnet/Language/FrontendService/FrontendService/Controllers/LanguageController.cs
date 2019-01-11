@@ -37,7 +37,7 @@ namespace FrontendService.Controllers
         /// <returns>Always returns "healthy" if the app is able.</returns>
         public string Get()
         {
-            return "healthy";
+            return "healthy, cognitive service container endpoint = " + ServiceEndpoint;
         }
 
         /// <summary>
@@ -48,9 +48,14 @@ namespace FrontendService.Controllers
         [HttpGet("{text}")]
         public async Task<string> DetectLanguage([FromRoute] string text)
         {
-            var inputs = new List<Input>() { new Input("id", text) };
-            var result = await _taClient.DetectLanguageAsync(new BatchInput(inputs));
-            return result.Documents[0].DetectedLanguages[0].Name;
+            try{
+                var inputs = new List<Input>() { new Input("id", text) };
+                var result = await _taClient.DetectLanguageAsync(new BatchInput(inputs));
+                return result.Documents[0].DetectedLanguages[0].Name;
+            } catch(Exception ex){
+                // returns error is cognitive service container can't be reached
+                return ex.Message;
+            }
         }
     }
 }
