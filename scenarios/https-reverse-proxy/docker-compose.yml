@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  cognitive-service:
+    image: mcr.microsoft.com/azure-cognitive-services/language
+    ports:
+      - 5000:5000
+    environment:
+      - eula=accept
+      - billing=<billing>
+      - apikey=<apikey>
+  nginx:
+    image: nginx
+    ports:
+      - 443:443
+    volumes:
+      - <path>/<to>/conf:/etc/nginx/conf.d/
