@@ -12,5 +12,7 @@ services:
     image: nginx
     ports:
       - 443:443
+      - 8080:80
     volumes:
+      - <path>/<to>/cert:/cert 
       - <path>/<to>/conf:/etc/nginx/conf.d/
