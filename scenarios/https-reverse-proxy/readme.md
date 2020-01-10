@@ -12,15 +12,19 @@ Nginx uses [configuration files](https://docs.nginx.com/nginx/admin-guide/basic-
 > Note: The address specified for `proxy_pass` must be available from within the Nginx container's network.
 ```conf
 server {
-  listen              443 ssl;
-  ssl_certificate     /cert/nginx.crt;
-  ssl_certificate_key /cert/nginx.key;
+  listen              80;
+  return 301 https://$host$request_uri;
+}
 
-  # Redirect HTTP requests to HTTPS
-  return 301 https://$host$request_uri
+server {
+  listen              443 ssl;
+  ssl_certificate     /cert/cognitive-services-TLS-test.crt;
+  ssl_certificate_key /cert/cognitive-services-TLS-test.key;
 
   location / {
-    proxy_pass http://localhost:5000;
+    proxy_pass http://cognitive-service:5000;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Real-IP  $remote_addr;
   }
 }
 ```
