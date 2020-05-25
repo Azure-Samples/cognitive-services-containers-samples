@@ -5,13 +5,6 @@ using System.Threading.Tasks;
 
 namespace FaceConsole
 {
-    class MockCredentials : AzureKeyCredential
-    {
-        public MockCredentials(string key)
-            : base(key)
-        { }
-    }
-
     class Program
     {
         private const string ApiKey = "00000000000000000000000000000000";
@@ -26,7 +19,7 @@ namespace FaceConsole
             }
 
             var phrase = args[0];
-            var client = new TextAnalyticsClient(new Uri(Endpoint), new MockCredentials(ApiKey));
+            var client = new TextAnalyticsClient(new Uri(Endpoint), new AzureKeyCredential(ApiKey));
             DetectFaces(client, phrase).Wait();
         }
 
