@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.AI.TextAnalytics" Version="1.0.0-preview.4" />
+    <PackageReference Include="Azure.AI.TextAnalytics" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
